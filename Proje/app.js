@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const commentNameInput = document.getElementById("comment-name");
     const courseListDiv = document.getElementById("course-list");
     const searchInput = document.getElementById('search-input');
+    const authPasswordInput = document.getElementById("auth-password"); // Şifre inputu yakalandı
 
     let isLoginMode = true;
     let activeCourseId = "1";
@@ -167,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const titleText = card.innerText.split('%')[0].trim(); 
         
         document.getElementById('video-title').innerText = "▶ " + titleText + " Oynatılıyor...";
+        // Autoplay eklendi ki derse tıklayınca direkt başlasın
         document.getElementById('youtube-player').src = "https://www.youtube.com/embed/" + card.getAttribute('data-video') + "?autoplay=1";
         
         const user = localStorage.getItem("currentUser");
@@ -181,10 +183,20 @@ document.addEventListener("DOMContentLoaded", () => {
         authToggleLink.innerText = isLoginMode ? "Kayıt Ol" : "Giriş Yap";
     });
 
+    // Enter tuşu ile giriş/kayıt yapma desteği eklendi
+    if(authPasswordInput) {
+        authPasswordInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                authActionBtn.click();
+            }
+        });
+    }
+
     authActionBtn.addEventListener("click", () => {
         const user = document.getElementById("auth-username").value.trim();
         const pass = document.getElementById("auth-password").value.trim();
-        if (!user || !pass) return alert("Alanları doldur!");
+        if (!user || !pass) return alert("Lütfen kullanıcı adı ve şifre alanlarını doldurun!");
 
         if (isLoginMode) {
             if (localStorage.getItem("user_" + user) === pass) {
@@ -229,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateMainProgress(prog);
             
             let xp = parseInt(localStorage.getItem(user + "_xp")) || 0;
-            xp += 100;
+            xp += 100; // Her %25'lik ilerlemede 100 XP verir
             localStorage.setItem(user + "_xp", xp);
             xpText.innerText = xp;
             updateRankText(xp); 
@@ -250,17 +262,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    document.getElementById("submit-comment").addEventListener("click", () => {
+    const commentBtn = document.getElementById("submit-comment");
+    const commentTextInput = document.getElementById("comment-text");
+
+    function sendComment() {
         const name = commentNameInput.value;
-        const text = document.getElementById("comment-text").value.trim();
+        const text = commentTextInput.value.trim();
         if (!text) return;
 
         const comments = JSON.parse(localStorage.getItem("global_comments")) || [];
         comments.push({ name, text });
         localStorage.setItem("global_comments", JSON.stringify(comments));
         renderComments();
-        document.getElementById("comment-text").value = "";
-    });
+        commentTextInput.value = "";
+    }
+
+    if(commentBtn) commentBtn.addEventListener("click", sendComment);
+    
+    // Yorum kısmına Enter tuşu desteği eklendi
+    if(commentTextInput) {
+        commentTextInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendComment();
+            }
+        });
+    }
 
     const canvas = document.getElementById('book-animation-canvas');
     if(canvas) {

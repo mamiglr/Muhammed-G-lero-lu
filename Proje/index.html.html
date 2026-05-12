@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATÜ Akademi | Profesyonel Eğitim Dashboard v1.0</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ================================================================
+           1. CSS TASARIM SİSTEMİ (DESIGN SYSTEM)
+           ================================================================
+           Bu bölüm sitenin tüm renk, gölge ve animasyon değişkenlerini tutar.
+           Maksimum performans ve görsel derinlik için Enterprise standartları kullanılmıştır.
+        */
+        :root {
+            --primary: #00e5ff;
+            --primary-glow: rgba(0, 229, 255, 0.4);
+            --primary-dark: #00b8cc;
+            --sidebar-bg: #1e2229;
+            --sidebar-hover: #2d333b;
+            --main-bg: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --sidebar-text: #adbac7;
+            --border: #e2e8f0;
+            --white: #ffffff;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #fbbf24; /* Yıldızlar için eklendi */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ================================================================
+           KARANLIK MOD (DARK MODE) DEĞİŞKENLERİ
+           ================================================================ */
+        body.dark-mode {
+            --main-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: #334155;
+            --sidebar-bg: #0b0f19;
+            --white: #1e293b;
+        }
+
+        body.dark-mode .header-bar,
+        body.dark-mode .progress-dashboard,
+        body.dark-mode .rating-dashboard,
+        body.dark-mode .interaction-panel,
+        body.dark-mode .enterprise-card,
+        body.dark-mode .dropdown-menu {
+            background-color: var(--card-bg);
+            border-color: var(--border);
+        }
+
+        body.dark-mode .video-title-main,
+        body.dark-mode .interaction-panel h3,
+        body.dark-mode .enterprise-card h2,
+        body.dark-mode .c-node-text h5 {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .prog-track-base,
+        body.dark-mode .comment-box-master input,
+        body.dark-mode .c-node-avatar,
+        body.dark-mode .field-row .data-box,
+        body.dark-mode .back-navigation,
+        body.dark-mode .profile-trigger {
+            background-color: #334155;
+            color: #f8fafc;
+            border-color: #475569;
+        }
+
+        body.dark-mode .dropdown-menu a {
+            color: #f8fafc;
+            border-bottom-color: var(--border);
+        }
+
+        body.dark-mode .dropdown-menu a:hover {
+            background-color: #334155;
+        }
+        
+        body.dark-mode .stars-container {
+            color: #334155; /* Karanlık modda boş yıldız rengi */
+        }
+
+        /* TEMEL RESET VE TIPOGRAFI KURALLARI */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--main-bg);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* ================================================================
+           2. GELİŞMİŞ ANIMASYON MOTORU (ANIMATION ENGINE)
+           ================================================================
+        */
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        @keyframes slideInLeft { 
+            from { transform: translateX(-30px); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
+
+        @keyframes popIn { 
+            0% { transform: scale(0.95); opacity: 0; } 
+            100% { transform: scale(1); opacity: 1; } 
+        }
+
+        @keyframes headerSlide { 
+            from { transform: translateY(-100%); } 
+            to { transform: translateY(0); } 
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 229, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
+        }
+
+        @keyframes rotateSpinner {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ================================================================
+           3. AUTH GATE (GİRİŞ KONTROLÜ & GÜVENLİK DUVARI)
+           ================================================================
+        */
+        .auth-gate {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 60px;
+            border-radius: 35px;
+            width: 90%;
+            max-width: 460px;
+            text-align: center;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+            animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .auth-card h1 {
+            font-family: 'Poppins';
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .auth-card p { 
+            color: var(--text-dim); 
+            margin-bottom: 40px; 
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 18px 24px;
+            border: 2px solid #f1f5f9;
+            border-radius: 16px;
+            font-size: 1.05rem;
+            margin-bottom: 18px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .auth-card input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(0, 229, 255, 0.15);
+            background: #fff;
+        }
+
+        .auth-card button {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 1.15rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 15px;
+        }
+
+        .auth-card button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 229, 255, 0.3);
+        }
+
+        .switch-auth-mode {
+            display: block;
+            margin-top: 25px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* ================================================================
+           4. MAIN LAYOUT (ANA UYGULAMA MİMARİSİ)
+           ================================================================
+        */
+        #app-root {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            filter: blur(25px);
+            pointer-events: none;
+            transition: filter 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #app-root.ready { 
+            filter: blur(0); 
+            pointer-events: auto; 
+        }
+
+        /* --- SIDEBAR (KATALOG SİSTEMİ) --- */
+        .sidebar {
+            width: 340px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 500;
+            box-shadow: 15px 0 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .sidebar-brand {
+            padding: 40px 35px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.15);
+        }
+
+        .logo-text {
+            font-family: 'Poppins';
+            font-size: 1.6rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px 20px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar { width: 6px; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: #333; border-radius: 20px; }
+
+        .nav-section { margin-bottom: 40px; }
+
+        .nav-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            font-weight: 900;
+            letter-spacing: 2.5px;
+            margin: 0 0 18px 15px;
+            opacity: 0.6;
+        }
+
+        .video-items { list-style: none; }
+
+        .video-items li {
+            padding: 15px 20px;
+            margin-bottom: 8px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            color: var(--sidebar-text);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            animation: slideInLeft 0.5s ease forwards;
+        }
+
+        .video-items li:hover {
+            background: var(--sidebar-hover);
+            color: white;
+            transform: translateX(8px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .video-items li.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #000;
+            font-weight: 800;
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        /* --- MAIN STAGE & TOP NAVIGATION --- */
+        .main-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header-bar {
+            height: 85px;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 50px;
+            border-bottom: 1px solid var(--border);
+            z-index: 400;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: background-color 0.4s ease;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 10px 22px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            background: var(--main-bg);
+            position: relative;
+        }
+
+        .profile-trigger:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .user-name-display {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .avatar-container {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 1.3rem;
+            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.25);
+            border: 2px solid var(--white);
+        }
+
+        /* ================================================================
+           5. DROPDOWNS & INTERACTIVE ELEMENTS
+           ================================================================
+        */
+        .dropdown-menu {
+            position: absolute;
+            top: 85px;
+            right: 0;
+            width: 260px;
+            background-color: var(--card-bg);
+            border-radius: 22px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            display: none;
+            overflow: hidden;
+            z-index: 1000;
+            padding: 10px;
+        }
+
+        .dropdown-menu.show { 
+            display: block; 
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards; 
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border-radius: 12px;
+            margin-bottom: 2px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--main-bg);
+            color: var(--primary-dark);
+            padding-left: 28px;
+        }
+
+        .dropdown-menu .logout-btn { 
+            color: var(--danger); 
+            font-weight: 800; 
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
+            padding-top: 20px;
+        }
+
+        /* ================================================================
+           6. CONTENT ENGINE (PAGES)
+           ================================================================
+        */
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 50px;
+            scroll-behavior: smooth;
+            background: var(--main-bg);
+            transition: background-color 0.4s ease;
+        }
+
+        .page-node { 
+            display: none; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
+
+        .page-node.active { 
+            display: block; 
+            animation: fadeIn 0.8s ease; 
+        }
+
+        /* --- VIDEO PLAYER MİMARİSİ --- */
+        .video-container-wrap {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.25);
+            margin-bottom: 50px;
+            position: relative;
+            border: 4px solid var(--white);
+        }
+
+        .video-container-wrap iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
+
+        .video-title-main { 
+            font-family: 'Poppins'; 
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            margin-bottom: 35px; 
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+        }
+
+        /* --- İLERLEME TAKİP SİSTEMİ --- */
+        .progress-dashboard {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transition: background-color 0.4s ease;
+        }
+
+        .prog-meta-data {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 800;
+            color: var(--text-dim);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prog-track-base {
+            width: 100%;
+            height: 18px;
+            background: var(--main-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .prog-fill-master {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+            width: 0%;
+            border-radius: 20px;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+        }
+
+        .prog-fill-master::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* --- YILDIZ PUANLAMA SİSTEMİ --- */
+        .rating-dashboard {
+            background-color: var(--card-bg);
+            padding: 30px 40px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            margin-bottom: 50px;
+            box-shadow: var(--shadow-md);
+            transition: background-color 0.4s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rating-meta-data {
+            font-weight: 800;
+            color: var(--text-dim);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stars-container {
+            display: flex;
+            gap: 10px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #e2e8f0;
+        }
+
+        .stars-container .star {
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .stars-container .star:hover {
+            transform: scale(1.15);
+        }
+
+        .stars-container .star.active {
+            color: var(--warning);
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+
+        /* --- YORUM VE ETKİLEŞİM SİSTEMİ --- */
+        .interaction-panel {
+            background-color: var(--card-bg);
+            border-radius: 30px;
+            padding: 50px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: background-color 0.4s ease;
+        }
+
+        .interaction-panel h3 { 
+            font-size: 1.8rem; 
+            margin-bottom: 40px; 
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .comment-box-master {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .comment-box-master input {
+            flex: 1;
+            padding: 20px 35px;
+            border-radius: 60px;
+            border: 2px solid var(--border);
+            background-color: var(--main-bg);
+            color: var(--text-main);
+            font-size: 1.1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .comment-box-master input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .comment-box-master button {
+            padding: 0 45px;
+            border-radius: 60px;
+            background: var(--primary);
+            border: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 15px rgba(0, 229, 255, 0.2);
+            color: #000;
+        }
+
+        .comment-box-master button:hover {
+            transform: scale(1.05) translateY(-2px);
+            background: var(--primary-dark);
+        }
+
+        .comment-feed-node {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .c-node-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: var(--main-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            flex-shrink: 0;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .c-node-text h5 { 
+            font-size: 1.1rem; 
+            margin-bottom: 8px; 
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .c-node-text span {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .c-node-text p { 
+            color: var(--text-main); 
+            opacity: 0.8;
+            line-height: 1.7; 
+            font-size: 1.05rem; 
+        }
+
+        /* --- SUBPAGE (PROFİL/AYARLAR) ÖZEL TASARIMI --- */
+        .enterprise-card {
+            background-color: var(--card-bg);
+            padding: 70px;
+            border-radius: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            max-width: 900px;
+            margin: 0 auto;
+            transition: background-color 0.4s ease;
+        }
+
+        .back-navigation {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            background-color: var(--main-bg);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 800;
+            margin-bottom: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            font-size: 1rem;
+        }
+
+        .back-navigation:hover {
+            transform: translateX(-8px);
+            border-color: var(--primary);
+        }
+
+        .field-row { margin-bottom: 45px; }
+
+        .field-row label { 
+            display: block; 
+            font-size: 0.9rem; 
+            font-weight: 900; 
+            color: var(--text-dim); 
+            text-transform: uppercase; 
+            margin-bottom: 15px; 
+            letter-spacing: 2px; 
+        }
+
+        .field-row .data-box { 
+            font-size: 1.3rem; 
+            font-weight: 700; 
+            color: var(--text-main); 
+            padding: 20px 30px; 
+            background-color: var(--main-bg); 
+            border-radius: 18px; 
+            border: 2px solid var(--border); 
+        }
+
+        /* ================================================================
+           7. MOBİL UYUM (RESPONSIVE) KODLARI
+           ================================================================
+           Telefon ve tablet ekranlarında sitenin dizilimini esnekleştirir.
+        */
+        @media screen and (max-width: 850px) {
+            body {
+                height: auto;
+                overflow: auto; /* Mobilde body scroll açıldı */
+            }
+            #app-root {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 40vh; /* Mobilde menü ekranın %40'ından fazlasını kaplamasın */
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            }
+            .main-stage {
+                overflow: visible;
+            }
+            .header-bar {
+                padding: 0 20px;
+                justify-content: center;
+            }
+            .profile-trigger {
+                position: static; /* Mobilde menü hizalaması için */
+            }
+            .dropdown-menu {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 75px;
+                width: 90%;
+            }
+            .content-scroll {
+                padding: 20px;
+                overflow: visible;
+            }
+            .video-title-main {
+                font-size: 1.8rem;
+                text-align: center;
+            }
+            .progress-dashboard, .rating-dashboard, .interaction-panel {
+                padding: 25px;
+            }
+            .rating-dashboard {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .comment-box-master {
+                flex-direction: column;
+            }
+            .comment-box-master button {
+                padding: 20px;
+                width: 100%;
+            }
+            .enterprise-card {
+                padding: 30px;
+            }
+            .auth-card {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-gate" id="gate">
+        <div class="auth-card" id="login-container">
+            <h1>Hoş Geldin 🎓</h1>
+            <p>Eğitimine kaldığın yerden devam et.</p>
+            
+            <div id="login-error" style="color:var(--danger); font-size:0.9rem; margin-bottom:20px; display:none; font-weight:700;">
+                Hata: E-posta veya şifre yanlış!
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="login-email" placeholder="E-posta Adresiniz" autocomplete="off">
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="login-pass" placeholder="Şifreniz" autocomplete="off">
+            </div>
+
+            <button onclick="executeLogin()">Giriş Yap</button>
+            
+            <span class="switch-auth-mode" onclick="toggleAuthMode('reg')">Yeni bir hesap oluştur</span>
+        </div>
+
+        <div class="auth-card" id="register-container" style="display:none;">
+            <h1>Kayıt Ol 🚀</h1>
+            <p>ATÜ Akademi ailesine hemen katıl.</p>
+            
+            <div id="reg-error" style="color:var(--danger); font-size:0.9rem; margin-bottom:20px; display:none; font-weight:700;">
+                Hata: Lütfen bilgileri eksiksiz doldurun!
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="reg-name" placeholder="Adınız Soyadınız" autocomplete="off">
+            </div>
+            
+            <div class="input-group">
+                <input type="email" id="reg-email" placeholder="E-posta Adresiniz" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="reg-pass" placeholder="Şifre Belirleyin" autocomplete="off">
+            </div>
+
+            <button onclick="executeRegister()">Kayıt Ol ve Başla</button>
+            
+            <span class="switch-auth-mode" onclick="toggleAuthMode('login')">Zaten bir hesabım var</span>
+        </div>
+    </div>
+
+    <div id="app-root">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <a href="#" class="logo-text" onclick="navTo('video-page')">ATÜ AKADEMİ</a>
+            </div>
+            
+            <div class="sidebar-nav">
+                
+                <div class="nav-section">
+                    <div class="nav-label">HTML & Temel Yapı</div>
+                    <ul class="video-items">
+                        <li data-id="sUWEuDSD7bE" class="active">Sıfırdan HTML - Sadık Turan</li>
+                        <li data-id="IRsT7gcJlO8">HTML5 Etiketleri - Kodlama Vakti</li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">CSS Tasarım Dünyası</div>
+                    <ul class="video-items">
+                        <li data-id="5FFSpOVXhzo">Sıfırdan CSS Kursu</li>
+                        <li data-id="n-lKcQ9_-SE">CSS Kutu Modeli Mantığı</li>
+                        <li data-id="NnZ3qr6yXzU">Modern Flexbox Mimarisi</li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">JavaScript & Modern Web</div>
+                    <ul class="video-items">
+                        <li data-id="9NnQIKVzO_I">JS Döngüler ve Koşullar</li>
+                        <li data-id="W6NZfCO5SIk">JS Sıfırdan Başlangıç</li>
+                        <li data-id="nhhNRF1gb6M">React JS'e Giriş</li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">Database & SQL</div>
+                    <ul class="video-items">
+                        <li data-id="L86eqtdC2as">SQL Temelleri ve Sorgular</li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">PHP & Backend Eğitimi</div>
+                    <ul class="video-items">
+                        <li data-id="rdYpMb3BFxI">PHP Sıfırdan Başlangıç</li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">Python Programlama</div>
+                    <ul class="video-items">
+                        <li data-id="_wZUNiGtkcw">Python ile Sıfırdan Kodlama</li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-label">Versiyon Kontrol Sistemi</div>
+                    <ul class="video-items">
+                        <li data-id="ihoPT325jyk">Git ve GitHub Kullanımı</li>
+                    </ul>
+                </div>
+
+            </div>
+        </aside>
+
+        <main class="main-stage">
+            
+            <header class="header-bar">
+                <div class="profile-trigger" onclick="togglePlatformMenu(event)">
+                    <span class="user-name-display" id="nav-user-name">Yükleniyor...</span>
+                    <div class="avatar-container" id="avatar-init">A</div>
+                    
+                    <div class="dropdown-menu" id="p-dropdown">
+                        <a onclick="navTo('profile-page')">👤 Akademik Profilim</a>
+                        <a onclick="navTo('settings-page')">⚙️ Akademi Ayarları</a>
+                        <a onclick="navTo('video-page')">📚 Aktif Derslerime Dön</a>
+                        <a onclick="forcePlatformLogout()" class="logout-btn">🚪 Güvenli Çıkış</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-scroll">
+                
+                <div id="video-page" class="page-node active">
+                    <div class="video-view-master">
+                        <div class="video-container-wrap">
+                            <iframe id="api-engine" src="https://www.youtube.com/embed/sUWEuDSD7bE?enablejsapi=1&rel=0&showinfo=0" allowfullscreen></iframe>
+                        </div>
+
+                        <h1 class="video-title-main" id="active-video-display-title">Sıfırdan HTML - Sadık Turan</h1>
+
+                        <div class="progress-dashboard">
+                            <div class="prog-meta-data">
+                                <span>VİDEO İLERLEME SÜRESİ</span>
+                                <span id="prog-percent-label">YÜKLENİYOR...</span>
+                            </div>
+                            <div class="prog-track-base">
+                                <div class="prog-fill-master" id="prog-fill-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="rating-dashboard">
+                            <div class="rating-meta-data">
+                                <span>Dersi Değerlendir</span><br>
+                                <span id="rating-text-label" style="font-size: 0.85rem; opacity: 0.7; font-weight: 600;">Puan Bekleniyor</span>
+                            </div>
+                            <div class="stars-container" id="stars-container">
+                                </div>
+                        </div>
+
+                        <div class="interaction-panel">
+                            <h3>Derse Dair Sorular & Akademik Yorumlar</h3>
+                            <div class="comment-box-master">
+                                <input type="text" id="c-field" placeholder="Bir soru sorun veya teknik düşüncenizi paylaşın...">
+                                <button onclick="handleCommentPush()">Gönder</button>
+                            </div>
+                            <div id="comments-display-feed">
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="profile-page" class="page-node">
+                    <div class="enterprise-card">
+                        <button class="back-navigation" onclick="navTo('video-page')">← Derslere Geri Dön</button>
+                        <h2 style="font-family:'Poppins'; font-size:2.5rem; margin-bottom:50px;">👤 Akademik Profilim</h2>
+                        
+                        <div class="field-row">
+                            <label>Öğrenci Adı Soyadı</label>
+                            <div class="data-box" id="p-full-name">Veri bekleniyor...</div>
+                        </div>
+                        <div class="field-row">
+                            <label>Sistem Kayıtlı E-posta</label>
+                            <div class="data-box" id="p-full-email">Veri bekleniyor...</div>
+                        </div>
+                        <div class="field-row">
+                            <label>Akademik Lisans Durumu</label>
+                            <div style="display:flex; align-items:center; gap:15px; padding:10px;">
+                                <div style="width:15px; height:15px; border-radius:50%; background:var(--success); animation:pulseGlow 2s infinite;"></div>
+                                <span style="font-weight:800; color:var(--success); font-size:1.1rem;">Aktif ATÜ Öğrencisi (Sertifika Adayı)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings-page" class="page-node">
+                    <div class="enterprise-card">
+                        <button class="back-navigation" onclick="navTo('video-page')">← Derslere Geri Dön</button>
+                        <h2 style="font-family:'Poppins'; font-size:2.5rem; margin-bottom:50px;">⚙️ Akademi Ayarları</h2>
+                        
+                        <div class="field-row" style="background:var(--main-bg); padding:30px; border-radius:25px; border:1px solid var(--border);">
+                            <label style="display:flex; align-items:center; gap:15px; cursor:pointer;">
+                                <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--primary);">
+                                <span style="color:var(--text-main); text-transform:none; letter-spacing:0; font-size:1.1rem;">Yeni ders yüklendiğinde anlık bildirim al</span>
+                            </label>
+                        </div>
+
+                        <div class="field-row" style="background:var(--main-bg); padding:30px; border-radius:25px; border:1px solid var(--border);">
+                            <label style="display:flex; align-items:center; gap:15px; cursor:pointer;">
+                                <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--primary);">
+                                <span style="color:var(--text-main); text-transform:none; letter-spacing:0; font-size:1.1rem;">Video bittiğinde bir sonraki derse otomatik geç</span>
+                            </label>
+                        </div>
+
+                        <div class="field-row" style="background:var(--main-bg); padding:30px; border-radius:25px; border:1px solid var(--border);">
+                            <label style="display:flex; align-items:center; gap:15px; cursor:pointer;">
+                                <input type="checkbox" id="dark-mode-toggle" style="width:20px; height:20px; accent-color:var(--primary);">
+                                <span style="color:var(--text-main); text-transform:none; letter-spacing:0; font-size:1.1rem;">Karanlık modu otomatik olarak aktifleştir</span>
+                            </label>
+                        </div>
+
+                        <button style="width:100%; padding:22px; background:var(--sidebar-bg); color:white; border:none; border-radius:20px; font-weight:800; font-size:1.2rem; cursor:pointer; margin-top:20px;" onclick="navTo('video-page')">Değişiklikleri Kaydet</button>
+                    </div>
+                </div>
+
+                <footer style="margin-top: 60px; padding: 30px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 0.9rem;">
+                    <p>Geri Bildirim ve Destek: <a href="mailto:33.mglr@gmail.com" style="color: var(--primary-dark); text-decoration: none; font-weight: 800;">33.mglr@gmail.com</a> | Instagram: <a href="https://www.instagram.com/mamii_glr" target="_blank" style="color: var(--primary-dark); text-decoration: none; font-weight: 800;">@mamii_glr</a></p>
+                    <p style="margin-top: 10px; font-size: 0.7rem;">© 2026 ATÜ Akademi - Geleceği Kodla</p>
+                </footer>
+                </div>
+        </main>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        /**
+         * GLOBAL STATE MANAGEMENT
+         * Platformun tüm verileri, ilerleme ve yorumlar LocalStorage üzerinde KALICI olarak yönetilir.
+         */
+        let userDB = JSON.parse(localStorage.getItem('atu_enterprise_users_db')) || [];
+        let activeUser = JSON.parse(localStorage.getItem('atu_enterprise_user'));
+        
+        // İzleme süresi kalıcı olarak tarayıcıya kaydedilir
+        let watchTimeData = JSON.parse(localStorage.getItem('atu_enterprise_progress')) || {}; 
+        
+        // Yorumlar kalıcı olarak tarayıcıya kaydedilir
+        let databaseComments = JSON.parse(localStorage.getItem('atu_enterprise_comments')) || {};
+
+        // Yıldız puanlamaları kalıcı olarak tarayıcıya kaydedilir
+        let databaseRatings = JSON.parse(localStorage.getItem('atu_enterprise_ratings')) || {};
+        
+        let currentVideoID = 'sUWEuDSD7bE';
+        let mainPlayerEngine;
+        let watchInterval;
+
+        /**
+         * AUTHENTICATION LOGIC
+         * Uygulama giriş ve kayıt işlemlerini yönetir.
+         */
+        function toggleAuthMode(mode) {
+            document.getElementById('login-container').style.display = mode === 'reg' ? 'none' : 'block';
+            document.getElementById('register-container').style.display = mode === 'reg' ? 'block' : 'none';
+        }
+
+        function executeRegister() {
+            const nameInput = document.getElementById('reg-name').value.trim();
+            const emailInput = document.getElementById('reg-email').value.trim();
+            const passInput = document.getElementById('reg-pass').value;
+            const errorArea = document.getElementById('reg-error');
+
+            if(!nameInput || !emailInput.includes('@') || passInput.length < 4) {
+                errorArea.style.display = 'block';
+                return;
+            }
+
+            const newUser = { name: nameInput, email: emailInput, pass: passInput };
+            userDB.push(newUser);
+            localStorage.setItem('atu_enterprise_users_db', JSON.stringify(userDB));
+            
+            activeUser = newUser;
+            localStorage.setItem('atu_enterprise_user', JSON.stringify(activeUser));
+            initializeApplication();
+        }
+
+        function executeLogin() {
+            const emailInput = document.getElementById('login-email').value.trim();
+            const passInput = document.getElementById('login-pass').value;
+            const errorArea = document.getElementById('login-error');
+
+            const foundUser = userDB.find(u => u.email === emailInput && u.pass === passInput);
+
+            if(foundUser) {
+                activeUser = foundUser;
+                localStorage.setItem('atu_enterprise_user', JSON.stringify(activeUser));
+                initializeApplication();
+            } else {
+                errorArea.style.display = 'block';
+            }
+        }
+
+        function initializeApplication() {
+            if(!activeUser) return;
+            
+            // UI Geçişi
+            document.getElementById('gate').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('app-root').classList.add('ready');
+            }, 500);
+
+            // Verileri Yerleştir
+            document.getElementById('nav-user-name').innerText = activeUser.name.split(' ')[0];
+            document.getElementById('avatar-init').innerText = activeUser.name[0].toUpperCase();
+            document.getElementById('p-full-name').innerText = activeUser.name;
+            document.getElementById('p-full-email').innerText = activeUser.email;
+            
+            // Karanlık Mod Kontrolü
+            initDarkMode();
+        }
+
+        function forcePlatformLogout() {
+            localStorage.removeItem('atu_enterprise_user');
+            location.reload();
+        }
+
+        /**
+         * DARK MODE ENGINE
+         * Kullanıcı tercihini kalıcı olarak kaydeder ve sistemi karanlık temaya geçirir.
+         */
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        
+        function initDarkMode() {
+            const isDarkMode = JSON.parse(localStorage.getItem('atu_dark_mode_active')) || false;
+            if(isDarkMode) {
+                document.body.classList.add('dark-mode');
+                if(darkModeToggle) darkModeToggle.checked = true;
+            }
+        }
+
+        if(darkModeToggle) {
+            darkModeToggle.addEventListener('change', (e) => {
+                if(e.target.checked) {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('atu_dark_mode_active', JSON.stringify(true));
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('atu_dark_mode_active', JSON.stringify(false));
+                }
+            });
+        }
+
+        /**
+         * NAVIGATION ENGINE (SPA LOGIC)
+         * Sayfalar arası geçişi yönetir.
+         */
+        function navTo(pageID) {
+            // Dropdown Kapat
+            document.getElementById('p-dropdown').classList.remove('show');
+            
+            // Sayfaları Gizle/Göster
+            document.querySelectorAll('.page-node').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageID).classList.add('active');
+            
+            // Video Durdurma (Eğer video sayfasından çıkılıyorsa)
+            if(pageID !== 'video-page' && mainPlayerEngine && mainPlayerEngine.pauseVideo) {
+                mainPlayerEngine.pauseVideo();
+            }
+
+            // Scroll'u başa al
+            document.querySelector('.content-scroll').scrollTop = 0;
+        }
+
+        function togglePlatformMenu(e) {
+            e.stopPropagation();
+            document.getElementById('p-dropdown').classList.toggle('show');
+        }
+
+        document.addEventListener('click', () => {
+            document.getElementById('p-dropdown').classList.remove('show');
+        });
+
+        /**
+         * YOUTUBE API & PROGRESS TRACKING ENGINE
+         * Videonun saniyesini takip eder, hile yapılmasını engeller ve LocalStorage'a kaydeder.
+         */
+        function onYouTubeIframeAPIReady() {
+            mainPlayerEngine = new YT.Player('api-engine', {
+                events: {
+                    'onReady': onPlayerEngineReady,
+                    'onStateChange': onPlayerEngineStateChange
+                }
+            });
+        }
+
+        function onPlayerEngineReady() {
+            refreshCommentsDisplay();
+            updateMasterProgressUI();
+            renderStars(); // Yıldızları Yükle
+        }
+
+        function onPlayerEngineStateChange(event) {
+            // Video Oynatılıyorsa Kayıt Tutmaya Başla
+            if(event.data === YT.PlayerState.PLAYING) {
+                // UI'ı hemen güncelle ki Yükleniyor yazısı saniyesinde gitsin
+                updateMasterProgressUI();
+                watchInterval = setInterval(logWatchSecond, 1000);
+            } else {
+                clearInterval(watchInterval);
+            }
+        }
+
+        function logWatchSecond() {
+            const currentTime = Math.floor(mainPlayerEngine.getCurrentTime());
+            if(!watchTimeData[currentVideoID]) watchTimeData[currentVideoID] = [];
+            
+            // Eğer saniye dizide yoksa ekle (İleri sarmayı etkisiz kılar ve kalıcı kayıt yapar)
+            if(!watchTimeData[currentVideoID].includes(currentTime)) {
+                watchTimeData[currentVideoID].push(currentTime);
+                localStorage.setItem('atu_enterprise_progress', JSON.stringify(watchTimeData));
+            }
+            
+            // UI GÜNCELLEMESİNİ HER SANİYE YAP (Yükleniyor takılmasını çözer)
+            updateMasterProgressUI();
+        }
+
+        function updateMasterProgressUI() {
+            if(!mainPlayerEngine || typeof mainPlayerEngine.getDuration !== 'function') return;
+            
+            const totalDuration = mainPlayerEngine.getDuration();
+            const uniqueSecondsWatched = watchTimeData[currentVideoID] ? watchTimeData[currentVideoID].length : 0;
+            
+            // %NaN Koruması ve Yükleniyor Takılması Çözümü
+            if(!totalDuration || totalDuration <= 0) {
+                document.getElementById('prog-percent-label').innerText = "YÜKLENİYOR...";
+                return;
+            }
+
+            let calculatedPercentage = Math.floor((uniqueSecondsWatched / totalDuration) * 100);
+            if(calculatedPercentage > 100) calculatedPercentage = 100;
+
+            const progressBar = document.getElementById('prog-fill-bar');
+            const progressText = document.getElementById('prog-percent-label');
+            
+            progressBar.style.width = calculatedPercentage + '%';
+            progressText.innerText = '%' + calculatedPercentage + ' TAMAMLANDI';
+            
+            // Tamamlanma Durumu Renk Değişimi
+            if(calculatedPercentage > 95) {
+                progressBar.style.background = '#10b981';
+            }
+        }
+
+        /**
+         * STAR RATING ENGINE (YILDIZ PUANLAMA SİSTEMİ)
+         */
+        function renderStars() {
+            const container = document.getElementById('stars-container');
+            const label = document.getElementById('rating-text-label');
+            const currentRating = databaseRatings[currentVideoID] || 0;
+            
+            container.innerHTML = '';
+            for(let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = 'star' + (i <= currentRating ? ' active' : '');
+                star.innerHTML = '★';
+                star.dataset.val = i;
+                
+                // Hover Efekti
+                star.addEventListener('mouseover', function() {
+                    const val = parseInt(this.dataset.val);
+                    Array.from(container.children).forEach((s, idx) => {
+                        s.style.color = idx < val ? 'var(--warning)' : '';
+                    });
+                });
+                
+                // Fare Çıkınca Sıfırla
+                star.addEventListener('mouseleave', function() {
+                    Array.from(container.children).forEach((s) => {
+                        s.style.color = ''; 
+                    });
+                });
+                
+                // Tıklama Kaydı
+                star.addEventListener('click', function() {
+                    const val = parseInt(this.dataset.val);
+                    databaseRatings[currentVideoID] = val;
+                    localStorage.setItem('atu_enterprise_ratings', JSON.stringify(databaseRatings));
+                    renderStars(); 
+                });
+                
+                container.appendChild(star);
+            }
+            
+            if(currentRating > 0) {
+                label.innerText = "Senin Puanın: " + currentRating + " Yıldız";
+                label.style.color = "var(--warning)";
+                label.style.opacity = "1";
+            } else {
+                label.innerText = "Puan Bekleniyor";
+                label.style.color = "var(--text-dim)";
+                label.style.opacity = "0.7";
+            }
+        }
+
+        /**
+         * INTERACTIVE COMMENT ENGINE
+         * Yorumların LocalStorage üzerinden kalıcı yönetimini sağlar.
+         */
+        function refreshCommentsDisplay() {
+            const feedList = document.getElementById('comments-display-feed');
+            feedList.innerHTML = '';
+            const activeComments = databaseComments[currentVideoID] || [];
+
+            if(activeComments.length === 0) {
+                feedList.innerHTML = `
+                    <div style="text-align:center; padding:40px; color:#94a3b8; font-weight:600;">
+                        <p>Bu derse dair henüz bir yorum bulunmuyor. İlk profesyonel yorumu siz yapın!</p>
+                    </div>
+                `;
+            } else {
+                [...activeComments].reverse().forEach(comment => {
+                    feedList.innerHTML += `
+                        <div class="comment-feed-node">
+                            <div class="c-node-avatar">${comment.u[0]}</div>
+                            <div class="c-node-text">
+                                <h5>${comment.u} <span>• ${comment.d}</span></h5>
+                                <p>${comment.t}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function handleCommentPush() {
+            const inputField = document.getElementById('c-field');
+            const commentText = inputField.value.trim();
+            
+            if(!commentText || !activeUser) return;
+
+            if(!databaseComments[currentVideoID]) databaseComments[currentVideoID] = [];
+            
+            // Yeni yorumu LocalStorage'a kalıcı olarak ekle
+            databaseComments[currentVideoID].push({
+                u: activeUser.name,
+                t: commentText,
+                d: new Date().toLocaleDateString('tr-TR')
+            });
+
+            localStorage.setItem('atu_enterprise_comments', JSON.stringify(databaseComments));
+            inputField.value = '';
+            refreshCommentsDisplay();
+        }
+
+        /**
+         * SIDEBAR INTERACTION LOGIC
+         * Ders seçimlerini ve video yüklemelerini yönetir.
+         */
+        document.querySelectorAll('.video-items li').forEach(li => {
+            li.addEventListener('click', function() {
+                // Aktif Sınıf Yönetimi
+                document.querySelectorAll('.video-items li').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+
+                // Veri Güncelleme
+                currentVideoID = this.dataset.id;
+                document.getElementById('active-video-display-title').innerText = this.innerText;
+
+                // Video Yükleme (B Planlı)
+                if(mainPlayerEngine && mainPlayerEngine.loadVideoById) {
+                    mainPlayerEngine.loadVideoById(currentVideoID);
+                } else {
+                    document.getElementById('api-engine').src = `https://www.youtube.com/embed/${currentVideoID}?enablejsapi=1&rel=0`;
+                }
+
+                // UI Reset ve Refresh
+                navTo('video-page');
+                refreshCommentsDisplay();
+                updateMasterProgressUI();
+                renderStars(); // Yeni videonun yıldızlarını getir
+            });
+        });
+
+        // PLATFORM INITIALIZATION
+        if(activeUser) initializeApplication();
+
+    </script>
+</body>
+</html>
