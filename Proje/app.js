@@ -2,52 +2,39 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // TAMAMEN SIRALI, KATEGORİLİ VE ÇALIŞAN 50 DERSLİK DEV MÜFREDAT
     const courseData = [
-        // ---------------- HTML TEMELLERİ ----------------
         { id: 1, category: "1. HTML Temelleri", title: "1. HTML'e Giriş", video: "pQN-pnXPaVg" },
         { id: 2, category: "1. HTML Temelleri", title: "2. Temel Etiketler", video: "yfoY53QXEnI" },
         { id: 3, category: "1. HTML Temelleri", title: "3. Formlar ve Inputlar", video: "W6NZfCO5SIk" },
         { id: 4, category: "1. HTML Temelleri", title: "4. Tablolar", video: "VQraviuvbQI" },
         { id: 5, category: "1. HTML Temelleri", title: "5. HTML İleri Seviye", video: "k0vA9_HlAvo" },
         { id: 6, category: "1. HTML Temelleri", title: "6. Sürükle Bırak Yapısı", video: "U66P2Is0G1A" },
-        
-        // ---------------- CSS VE TASARIM ----------------
         { id: 7, category: "2. CSS ve Tasarım", title: "7. CSS Flexbox Mantığı", video: "Z-WUXXk0LCY" },
         { id: 8, category: "2. CSS ve Tasarım", title: "8. CSS Grid Düzeni", video: "mCIOcFGJh-Y" },
         { id: 9, category: "2. CSS ve Tasarım", title: "9. Flexbox ve Grid Karşılaştırması", video: "PO3uwx6ECQ0" },
         { id: 10, category: "2. CSS ve Tasarım", title: "10. Margin ve Boşluklar", video: "YNkYvVCoD5Q" },
         { id: 11, category: "2. CSS ve Tasarım", title: "11. Dikey Menü Yapımı", video: "HzX-Qnd6kgI" },
         { id: 12, category: "2. CSS ve Tasarım", title: "12. Web Sayfasına İkon Ekleme", video: "tzAcbtgA4C0" },
-        
-        // ---------------- RESPONSIVE TASARIM ----------------
         { id: 13, category: "3. Responsive (Mobil Uyumlu) Tasarım", title: "13. Responsive Tasarım Temelleri", video: "b98L7-be0Zw" },
         { id: 14, category: "3. Responsive (Mobil Uyumlu) Tasarım", title: "14. Media Queries Kullanımı", video: "rueTdUCAbLk" },
         { id: 15, category: "3. Responsive (Mobil Uyumlu) Tasarım", title: "15. Ekran Boyutuna Göre Tasarım", video: "EXzLPl2JgwM" },
         { id: 16, category: "3. Responsive (Mobil Uyumlu) Tasarım", title: "16. Mobil Uyumlu Site Yapımı", video: "PRYDy6uTLaw" },
-        
-        // ---------------- JAVASCRIPT TEMELLERİ ----------------
         { id: 17, category: "4. JavaScript Temelleri", title: "17. Javascript Değişkenler", video: "CJsm5CUNJMw" },
         { id: 18, category: "4. JavaScript Temelleri", title: "18. JS Döngüler ve Karar Yapıları", video: "mNn-d0sFJ7w" },
         { id: 19, category: "4. JavaScript Temelleri", title: "19. JS Fonksiyonlar", video: "Z7L1M9iHMi4" },
         { id: 20, category: "4. JavaScript Temelleri", title: "20. JS Event Listeners (Olaylar)", video: "VcdxxgisaDo" },
         { id: 21, category: "4. JavaScript Temelleri", title: "21. Javascript DOM Nedir?", video: "FaMO0OUanv0" },
         { id: 22, category: "4. JavaScript Temelleri", title: "22. Dropdown Menü Yapımı", video: "NE9kqS-sP7Y" },
-        
-        // ---------------- İLERİ SEVİYE JS VE API ----------------
         { id: 23, category: "5. İleri Seviye JavaScript ve API", title: "23. Asenkron Yapılar", video: "2ZCnLQ49rR8" },
         { id: 24, category: "5. İleri Seviye JavaScript ve API", title: "24. Fetch API Kullanımı", video: "OdxAKazCQrk" },
         { id: 25, category: "5. İleri Seviye JavaScript ve API", title: "25. API ile Veri Çekme", video: "9DsEfk_dQo8" },
         { id: 26, category: "5. İleri Seviye JavaScript ve API", title: "26. Hızlı Fetch API Pratiği", video: "cuEtnrL9-H0" },
         { id: 27, category: "5. İleri Seviye JavaScript ve API", title: "27. Data ve API Çalışmaları", video: "tc8DU14qX6I" },
         { id: 28, category: "5. İleri Seviye JavaScript ve API", title: "28. JS ile API Projesi", video: "37vxWr0WgQk" },
-        
-        // ---------------- REACT.JS EĞİTİMLERİ ----------------
         { id: 29, category: "6. React.js Eğitimleri", title: "29. React.js Nedir?", video: "i38ql77cvp0" },
         { id: 30, category: "6. React.js Eğitimleri", title: "30. 10 Dakikada React JS", video: "s2skans2dP4" },
         { id: 31, category: "6. React.js Eğitimleri", title: "31. React Componentler", video: "wSDZyaLlCeo" },
         { id: 32, category: "6. React.js Eğitimleri", title: "32. React State Yapısı", video: "_gn7G0Cgszk" },
         { id: 33, category: "6. React.js Eğitimleri", title: "33. React Geliştirici Seviyeleri", video: "CXh55uorQs0" },
-        
-        // ---------------- GİT VE GİTHUB ----------------
         { id: 34, category: "7. Git ve Versiyon Kontrolü", title: "34. Git ve GitHub Kursu", video: "mAFoROnOfHs" },
         { id: 35, category: "7. Git ve Versiyon Kontrolü", title: "35. Yeni Başlayanlar İçin Git", video: "tRZGeaHPoaw" },
         { id: 36, category: "7. Git ve Versiyon Kontrolü", title: "36. Git Arka Planda Nasıl Çalışır?", video: "e9lnsKot_SQ" },
@@ -55,8 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 38, category: "7. Git ve Versiyon Kontrolü", title: "38. Git Branch Mantığı", video: "2GYBOwsBgVY" },
         { id: 39, category: "7. Git ve Versiyon Kontrolü", title: "39. Git Push ve Pull İşlemleri", video: "-kYHuFtCX7A" },
         { id: 40, category: "7. Git ve Versiyon Kontrolü", title: "40. Git Çatışmaları Çözme", video: "hHil1wRZ1cI" },
-        
-        // ---------------- YAYINLAMA VE BONUS ----------------
         { id: 41, category: "8. Web Sitesi Yayınlama ve Hosting", title: "41. Frontend ve Backend Nedir?", video: "uHEr6d6EftA" },
         { id: 42, category: "8. Web Sitesi Yayınlama ve Hosting", title: "42. Web Sitesi Kurulumu", video: "ZCZgTuAZxLg" },
         { id: 43, category: "8. Web Sitesi Yayınlama ve Hosting", title: "43. Site Yayınlama Rehberi", video: "3QZ1YycNHMQ" },
@@ -84,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const commentNameInput = document.getElementById("comment-name");
     const courseListDiv = document.getElementById("course-list");
     const searchInput = document.getElementById('search-input');
-    const authPasswordInput = document.getElementById("auth-password"); // Şifre inputu yakalandı
+    const authPasswordInput = document.getElementById("auth-password"); 
 
     let isLoginMode = true;
     let activeCourseId = "1";
@@ -103,8 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (loggedUser) {
             authOverlay.style.display = "none";
             mainContent.style.display = "grid";
-            userDisplayName.innerText = loggedUser;
-            commentNameInput.value = loggedUser;
+            
+            // Görünen isim kontrolü (Eğer değiştirdiyse onu yaz, değiştirmediyse kullanıcı adını yaz)
+            const savedDisplayName = localStorage.getItem("displayName_" + loggedUser) || loggedUser;
+            userDisplayName.innerText = savedDisplayName;
+            commentNameInput.value = savedDisplayName;
+            
             renderCourses(); 
             loadAllData();
             
@@ -117,19 +106,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ARTIK DERSLERİ ÇİZERKEN ARAYA KATEGORİ BAŞLIKLARI KOYUYOR
+    // İSİM DEĞİŞTİRME ÖZELLİĞİ (Tıklayınca ismini değiştirir)
+    userDisplayName.style.cursor = "pointer";
+    userDisplayName.title = "İsmini değiştirmek için tıkla!";
+    userDisplayName.addEventListener("click", () => {
+        const loggedUser = localStorage.getItem("currentUser");
+        const currentName = userDisplayName.innerText;
+        const newName = prompt("Görünen ismini değiştir:", currentName);
+        
+        if (newName && newName.trim() !== "") {
+            localStorage.setItem("displayName_" + loggedUser, newName.trim());
+            userDisplayName.innerText = newName.trim();
+            commentNameInput.value = newName.trim();
+            alert("İsmin başarıyla güncellendi!");
+        }
+    });
+
     function renderCourses() {
         const user = localStorage.getItem("currentUser");
         let html = "";
         let currentCategory = "";
         
         courseData.forEach(c => {
-            // Eğer yeni bir kategoriye geçtiysek, başlığı bas
             if (c.category !== currentCategory) {
                 html += `<div class="category-title">${c.category}</div>`;
                 currentCategory = c.category;
             }
-            
             const perc = localStorage.getItem(user + "_prog_" + c.id) || 0;
             const isActive = (c.id == activeCourseId) ? "active" : "";
             html += `
@@ -144,12 +146,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             const arananKelime = e.target.value.toLowerCase(); 
-            
-            // Arama yaparken kategori başlıklarını gizle (karışıklık olmasın diye)
             document.querySelectorAll('.category-title').forEach(cat => {
                 cat.style.display = arananKelime ? 'none' : 'block';
             });
-            
             document.querySelectorAll('.course-card').forEach(card => {
                 const dersAdi = card.innerText.toLowerCase();
                 card.style.display = dersAdi.includes(arananKelime) ? 'flex' : 'none';
@@ -168,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const titleText = card.innerText.split('%')[0].trim(); 
         
         document.getElementById('video-title').innerText = "▶ " + titleText + " Oynatılıyor...";
-        // Autoplay eklendi ki derse tıklayınca direkt başlasın
         document.getElementById('youtube-player').src = "https://www.youtube.com/embed/" + card.getAttribute('data-video') + "?autoplay=1";
         
         const user = localStorage.getItem("currentUser");
@@ -183,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
         authToggleLink.innerText = isLoginMode ? "Kayıt Ol" : "Giriş Yap";
     });
 
-    // Enter tuşu ile giriş/kayıt yapma desteği eklendi
     if(authPasswordInput) {
         authPasswordInput.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
@@ -193,21 +190,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // GÜNCELLENMİŞ GİRİŞ/KAYIT MANTIĞI
     authActionBtn.addEventListener("click", () => {
         const user = document.getElementById("auth-username").value.trim();
         const pass = document.getElementById("auth-password").value.trim();
         if (!user || !pass) return alert("Lütfen kullanıcı adı ve şifre alanlarını doldurun!");
 
         if (isLoginMode) {
+            // GİRİŞ YAPMA EKRANI
             if (localStorage.getItem("user_" + user) === pass) {
                 localStorage.setItem("currentUser", user);
                 checkLogin();
             } else { alert("Hatalı kullanıcı adı veya şifre!"); }
         } else {
+            // KAYIT OLMA EKRANI
+            if (localStorage.getItem("user_" + user)) {
+                return alert("Bu kullanıcı adı zaten alınmış! Lütfen başka bir isim dene.");
+            }
+            // Kaydı tamamla ve direkt giriş yap
             localStorage.setItem("user_" + user, pass);
-            alert("Kayıt başarılı! Şimdi giriş yapabilirsin.");
-            isLoginMode = true;
-            authToggleLink.click();
+            localStorage.setItem("currentUser", user);
+            alert("Kayıt başarılı! Hesabına giriş yapılıyor...");
+            checkLogin(); 
+            // Giriş yaptıktan sonra kutuları temizleyelim
+            document.getElementById("auth-username").value = "";
+            document.getElementById("auth-password").value = "";
         }
     });
 
@@ -241,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateMainProgress(prog);
             
             let xp = parseInt(localStorage.getItem(user + "_xp")) || 0;
-            xp += 100; // Her %25'lik ilerlemede 100 XP verir
+            xp += 100; 
             localStorage.setItem(user + "_xp", xp);
             xpText.innerText = xp;
             updateRankText(xp); 
@@ -279,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(commentBtn) commentBtn.addEventListener("click", sendComment);
     
-    // Yorum kısmına Enter tuşu desteği eklendi
     if(commentTextInput) {
         commentTextInput.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
