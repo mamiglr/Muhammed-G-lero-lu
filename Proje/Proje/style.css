@@ -1,0 +1,107 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #4a2e15; 
+    background-image: repeating-linear-gradient(to right, #4a2e15, #4a2e15 20px, #3d2510 20px, #3d2510 40px);
+    color: #2b1a0c; 
+    overflow-x: hidden;
+}
+
+#book-animation-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; }
+
+.auth-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000;
+    padding: 20px; /* Mobilde ekran kenarlarına yapışmasını engeller */
+}
+
+.auth-card { 
+    width: 100%; 
+    max-width: 350px; /* Mobilde küçülür ama bilgisayarda 350px'i geçmez */
+    text-align: center; 
+}
+
+.auth-card input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #d2bfa5; }
+#auth-toggle-text { margin-top: 15px; font-size: 0.9rem; }
+#auth-toggle-link { color: #8b5a2b; font-weight: bold; cursor: pointer; text-decoration: underline; }
+
+.layout-wrapper {
+    max-width: 1200px; margin: 20px auto;
+    display: grid; grid-template-columns: 1fr 2.5fr; 
+    gap: 20px; padding: 0 20px;
+}
+
+.card { background: #f4ebd8; padding: 20px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.4); border: 1px solid #d2bfa5; margin-bottom: 20px; }
+
+.btn { background-color: #8b5a2b; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.btn:hover { background-color: #6b4423; }
+
+/* VİDEO ALANI - MOBİL UYUMLU HALE GETİRİLDİ */
+.video-placeholder { 
+    width: 100%; 
+    height: auto; 
+    aspect-ratio: 16/9; /* Ekran boyutuna göre orantılı şekil alır */
+    background: #000; border-radius: 8px; overflow: hidden; margin-top: 15px; margin-bottom: 20px; 
+}
+.video-placeholder iframe { width: 100%; height: 100%; border: none; }
+
+.progress-container { width: 100%; height: 15px; background: #d2bfa5; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+.progress-bar { height: 100%; width: 0%; background: #4CAF50; transition: width 0.5s; }
+
+/* KURS LİSTESİ VE YENİ KATEGORİ BAŞLIKLARI */
+.course-items { display: flex; flex-direction: column; gap: 8px; }
+
+.category-title {
+    background: #6b4423;
+    color: #f4ebd8;
+    padding: 8px 12px;
+    margin: 15px 0 5px 0;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+.course-items .category-title:first-child { margin-top: 0; }
+
+.course-card { 
+    background: #e8dcc7; padding: 12px; border-radius: 6px; cursor: pointer; border: 1px solid #d2bfa5; 
+    display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
+}
+.course-card:hover { transform: translateX(5px); }
+.course-card.active { background: #8b5a2b; color: white; font-weight: bold; }
+.card-perc { font-size: 0.75rem; opacity: 0.8; background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 10px; }
+
+.profile-info { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.avatar { width: 50px; height: 50px; background: #e8dcc7; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; border: 2px solid #8b5a2b; }
+.stats { background: #e8dcc7; padding: 10px; border-radius: 5px; font-size: 0.9rem; }
+
+.comments-list { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+.comment-item { background: #e8dcc7; padding: 10px; border-radius: 5px; border-left: 4px solid #8b5a2b; }
+
+/* =========================================
+   GELİŞTİRİLMİŞ MOBİL UYUM (RESPONSIVE)
+   ========================================= */
+@media (max-width: 850px) { 
+    .layout-wrapper { 
+        grid-template-columns: 1fr; 
+        padding: 0 10px; 
+        margin: 10px auto;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+
+    .category-title {
+        font-size: 0.8rem;
+    }
+    
+    .btn {
+        width: 100%; /* Butonlar mobilde baş parmakla daha rahat tıklansın diye genişletildi */
+        padding: 12px;
+        margin-top: 10px;
+    }
+}
