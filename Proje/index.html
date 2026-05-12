@@ -165,7 +165,7 @@
             background: white;
             padding: 60px;
             border-radius: 35px;
-            width: 100%;
+            width: 90%;
             max-width: 460px;
             text-align: center;
             box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
@@ -369,6 +369,7 @@
             transition: var(--transition);
             border: 2px solid transparent;
             background: var(--main-bg);
+            position: relative;
         }
 
         .profile-trigger:hover {
@@ -404,7 +405,7 @@
         .dropdown-menu {
             position: absolute;
             top: 85px;
-            right: 50px;
+            right: 0;
             width: 260px;
             background-color: var(--card-bg);
             border-radius: 22px;
@@ -433,6 +434,7 @@
             transition: var(--transition);
             border-radius: 12px;
             margin-bottom: 2px;
+            cursor: pointer;
         }
 
         .dropdown-menu a:hover {
@@ -761,6 +763,75 @@
             border: 2px solid var(--border); 
         }
 
+        /* ================================================================
+           7. MOBİL UYUM (RESPONSIVE) KODLARI
+           ================================================================
+           Telefon ve tablet ekranlarında sitenin dizilimini esnekleştirir.
+        */
+        @media screen and (max-width: 850px) {
+            body {
+                height: auto;
+                overflow: auto; /* Mobilde body scroll açıldı */
+            }
+            #app-root {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 40vh; /* Mobilde menü ekranın %40'ından fazlasını kaplamasın */
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            }
+            .main-stage {
+                overflow: visible;
+            }
+            .header-bar {
+                padding: 0 20px;
+                justify-content: center;
+            }
+            .profile-trigger {
+                position: static; /* Mobilde menü hizalaması için */
+            }
+            .dropdown-menu {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 75px;
+                width: 90%;
+            }
+            .content-scroll {
+                padding: 20px;
+                overflow: visible;
+            }
+            .video-title-main {
+                font-size: 1.8rem;
+                text-align: center;
+            }
+            .progress-dashboard, .rating-dashboard, .interaction-panel {
+                padding: 25px;
+            }
+            .rating-dashboard {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .comment-box-master {
+                flex-direction: column;
+            }
+            .comment-box-master button {
+                padding: 20px;
+                width: 100%;
+            }
+            .enterprise-card {
+                padding: 30px;
+            }
+            .auth-card {
+                padding: 40px 20px;
+            }
+        }
     </style>
 </head>
 <body>
